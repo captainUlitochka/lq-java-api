@@ -15,4 +15,12 @@ public class HelloWorldTest {
     public void testHelloWorldEx3() {
         System.out.println("Hello from Olga");
     }
+
+    @Test
+    public void testHelloWorldEx4() {
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/get_text")
+                .andReturn();
+        response.body().print();
+    }
 }
