@@ -10,4 +10,9 @@ public class HelloWorldTest {
                 .andReturn();
         response.prettyPrint();
     }
+
+    @Test
+    public void testHelloWorldEx3() {
+        System.out.println("Hello from Olga");
+    }
 }
