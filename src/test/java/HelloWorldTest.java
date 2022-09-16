@@ -1,5 +1,4 @@
 import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
@@ -30,23 +29,16 @@ public class HelloWorldTest {
 
     @Test
     public void testRestAssured() {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", "John");
+        Map<String, Object> body = new HashMap<>();
+        body.put("param1", "value1");
+        body.put("param2", "value2");
 
-        JsonPath response = RestAssured
+        Response response = RestAssured
                 .given()
-                .queryParams(params)
-                .get("https://playground.learnqa.ru/api/hello")
-                .jsonPath();
-
-    String name = response.get("answer2");
-    if (name == null) {
-        System.out.println("The key 'answer2' is abscent");
-    } else {
-        System.out.println(name);
-    }
-
-        System.out.println(name);
+                .body(body)
+                .post("https://playground.learnqa.ru/api/check_type")
+                .andReturn();
+        response.print();
     }
 
 
