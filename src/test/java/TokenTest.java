@@ -48,9 +48,9 @@ public class TokenTest {
             System.out.println(status);
             Thread.sleep(tResult.seconds*1000);
             checkJob(tResult.token);
-        } else {
+        } else
             Assertions.assertEquals("Job is ready", status);
-            System.out.println(checkJob(tResult.token).get("result"));
-        }
+        System.out.println(checkJob(tResult.token).get("result"));
+
     }
 }
