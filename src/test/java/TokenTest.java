@@ -42,15 +42,18 @@ public class TokenTest {
 
    @Test
    public void getResult() throws InterruptedException {
-        TokenResult tResult = getToken();
-        String status = checkJob(tResult.token).get("status");
-        if (status.equals("Job is NOT ready")) {
-            System.out.println(status);
-            Thread.sleep(tResult.seconds*1000);
-            checkJob(tResult.token);
-        } else
-            Assertions.assertEquals("Job is ready", status);
-        System.out.println(checkJob(tResult.token).get("result"));
-
+       TokenResult tResult = getToken();
+       Map<String, String> jobResult = checkJob(tResult.token);
+       String status = jobResult.get("status");
+       if (status.equals("Job is NOT ready")) {
+           System.out.println(status);
+           Thread.sleep(tResult.seconds * 1000);
+           jobResult = checkJob(tResult.token);
+           status = jobResult.get("status");
+           Assertions.assertEquals("Job is ready", status);
+       } else {
+           Assertions.assertEquals("Job is ready", status);
+       }
+       System.out.println(jobResult.get("result"));
     }
 }
