@@ -3,17 +3,20 @@ import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-class TokenResult {
-    public String token;
-    public int seconds;
-
-}
 public class TokenTest {
-    public static final String URL = "https://playground.learnqa.ru/ajax/api/longtime_job";
+    private static final String URL = "https://playground.learnqa.ru/ajax/api/longtime_job";
+    private static final String JOB_READY = "Job is ready";
+    private static final String JOB_PROCESSING = "Job is NOT ready";
 
+    static class TokenResult {
+        public String token;
+        public long seconds;
+    }
+
+    static class JobResult {
+        public String status;
+        public String result;
+    }
     public TokenResult getToken() {
         JsonPath response = RestAssured
                 .get(URL)
@@ -24,36 +27,28 @@ public class TokenTest {
         tResult.seconds = response.getInt("seconds");
         return tResult;
     }
-
-    public Map<String, String> checkJob(String token) {
-        Map<String, String> answer = new HashMap<>();
+    public JobResult checkJob(String token) {
+        JobResult jResult = new JobResult();
         JsonPath checkResult = RestAssured
                 .given()
                 .queryParam("token", token)
                 .get(URL)
                 .jsonPath();
-        String result = checkResult.getString("result");
-        String status = checkResult.getString("status");
-
-        answer.put("result", result);
-        answer.put("status", status);
-        return answer;
+        jResult.result = checkResult.getString("result");
+        jResult.status = checkResult.getString("status");
+        return jResult;
     }
 
    @Test
    public void getResult() throws InterruptedException {
        TokenResult tResult = getToken();
-       Map<String, String> jobResult = checkJob(tResult.token);
-       String status = jobResult.get("status");
-       if (status.equals("Job is NOT ready")) {
-           System.out.println(status);
+       JobResult jobResult = checkJob(tResult.token);
+       if (jobResult.status.equals(JOB_PROCESSING)) {
+           System.out.println(jobResult.status);
            Thread.sleep(tResult.seconds * 1000);
            jobResult = checkJob(tResult.token);
-           status = jobResult.get("status");
-           Assertions.assertEquals("Job is ready", status);
-       } else {
-           Assertions.assertEquals("Job is ready", status);
        }
-       System.out.println(jobResult.get("result"));
+       Assertions.assertEquals(JOB_READY, jobResult.status);
+       System.out.println(jobResult.result);
     }
 }
