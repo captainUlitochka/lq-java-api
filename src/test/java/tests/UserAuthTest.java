@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import lib.Assertions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,28 +35,21 @@ public class UserAuthTest extends BaseTestCase {
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
 
-        this.cookie = this.getCookie(responseGetAuth,"auth_sid");
-        this.header = this.getHeader(responseGetAuth,"x-csrf-token");
-        this.userIdOnAuth = this.getIntFromJson(responseGetAuth,"user_id");
+        this.cookie = this.getCookie(responseGetAuth, "auth_sid");
+        this.header = this.getHeader(responseGetAuth, "x-csrf-token");
+        this.userIdOnAuth = this.getIntFromJson(responseGetAuth, "user_id");
     }
 
     @Test
     public void testAuthUser() {
-        JsonPath responseCheckAuth = RestAssured
+        Response responseCheckAuth = RestAssured
                 .given()
                 .header("x-csrf-token", this.header)
                 .cookie("auth_sid", this.cookie)
                 .get("https://playground.learnqa.ru/api/user/auth")
-                .jsonPath();
+                .andReturn();
 
-        int userIdOnCheck = responseCheckAuth.getInt("user_id");
-        assertTrue(userIdOnCheck > 0, "Unexpected user_id " + userIdOnCheck);
-
-        assertEquals(
-                userIdOnAuth,
-                userIdOnCheck,
-                "user_id from auth is not equal to user_id from check request"
-        );
+        Assertions.assertJsonByName(responseCheckAuth, "user_id", this.userIdOnAuth);
     }
 
     @ParameterizedTest
@@ -72,7 +66,7 @@ public class UserAuthTest extends BaseTestCase {
             throw new IllegalArgumentException("Condition value is known: " + condition);
         }
 
-        JsonPath responseForCheck = spec.get().jsonPath();
-        assertEquals(0, responseForCheck.getInt("user_id"), "user_id should be 0 for unauth request");
+        Response responseForCheck = spec.get().andReturn();
+        Assertions.assertJsonByName(responseForCheck, "user_id", 0);
     }
 }
