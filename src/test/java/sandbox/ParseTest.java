@@ -1,3 +1,5 @@
+package sandbox;
+
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 
