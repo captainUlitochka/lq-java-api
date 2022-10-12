@@ -16,11 +16,11 @@ public class BaseTestCase {
         return headers.getValue(name);
     }
 
-    protected String getCookie (Response Response, String name) {
-        Map<String,String> cookies = Response.getCookies();
+    protected String getCookie(Response Response, String name) {
+        Map<String, String> cookies = Response.getCookies();
 
         assertTrue(cookies.containsKey(name), "Response doesn't have cookie with name " + name);
-        return  cookies.get(name);
+        return cookies.get(name);
     }
 
     protected int getIntFromJson(Response Response, String name) {

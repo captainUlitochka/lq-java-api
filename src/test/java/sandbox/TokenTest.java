@@ -19,6 +19,7 @@ public class TokenTest {
         public String status;
         public String result;
     }
+
     public TokenResult getToken() {
         JsonPath response = RestAssured
                 .get(URL)
@@ -29,6 +30,7 @@ public class TokenTest {
         tResult.seconds = response.getInt("seconds");
         return tResult;
     }
+
     public JobResult checkJob(String token) {
         JobResult jResult = new JobResult();
         JsonPath checkResult = RestAssured
@@ -41,16 +43,16 @@ public class TokenTest {
         return jResult;
     }
 
-   @Test
-   public void getResult() throws InterruptedException {
-       TokenResult tResult = getToken();
-       JobResult jobResult = checkJob(tResult.token);
-       if (jobResult.status.equals(JOB_PROCESSING)) {
-           System.out.println(jobResult.status);
-           Thread.sleep(tResult.seconds * 1000);
-           jobResult = checkJob(tResult.token);
-       }
-       Assertions.assertEquals(JOB_READY, jobResult.status);
-       System.out.println(jobResult.result);
+    @Test
+    public void getResult() throws InterruptedException {
+        TokenResult tResult = getToken();
+        JobResult jobResult = checkJob(tResult.token);
+        if (jobResult.status.equals(JOB_PROCESSING)) {
+            System.out.println(jobResult.status);
+            Thread.sleep(tResult.seconds * 1000);
+            jobResult = checkJob(tResult.token);
+        }
+        Assertions.assertEquals(JOB_READY, jobResult.status);
+        System.out.println(jobResult.result);
     }
 }
