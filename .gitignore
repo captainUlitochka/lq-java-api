@@ -1,8 +1,8 @@
 # Compiled class file
 *.class
-.idea/
-.target
+.idea
 allure-results/
+target
 # Log file
 *.log
 
@@ -20,9 +20,6 @@ allure-results/
 *.zip
 *.tar.gz
 *.rar
-
-# xml
-*.xml
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
