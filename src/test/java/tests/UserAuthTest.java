@@ -1,11 +1,14 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import lib.ApiCoreRequests;
 import lib.Assertions;
 import lib.BaseTestCase;
-import lib.ApiCoreRequests;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +17,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
 
 @Epic("Authorization cases")
 @Feature("Authorization")
@@ -51,7 +50,7 @@ public class UserAuthTest extends BaseTestCase {
                         "https://playground.learnqa.ru/api/user/auth",
                         this.header,
                         this.cookie
-                        );
+                );
 
         Assertions.assertJsonByName(responseCheckAuth, "user_id", this.userIdOnAuth);
     }
