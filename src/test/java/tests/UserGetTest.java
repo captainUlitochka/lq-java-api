@@ -1,18 +1,28 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.ApiCoreRequests;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Data get cases")
+@Feature("Get user's data")
 public class UserGetTest extends BaseTestCase {
 
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
+    @Description("This test checks we can't get user's data without authorization")
+    @DisplayName("Get user's data without authorization")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289482")
     @Test
     public void testGetUserDataNotAuth() {
 
@@ -25,6 +35,9 @@ public class UserGetTest extends BaseTestCase {
         Assertions.assertJsonHasNotField(responseUserData, "email");
     }
 
+    @Description("This test checks we can user's data we're authorized in")
+    @DisplayName("Get this user's data")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289482")
     @Test
     public void testGetUserDetailsAuthAsSameUser() {
         Map<String, String> authData = new HashMap<>();
@@ -44,6 +57,9 @@ public class UserGetTest extends BaseTestCase {
 
     }
 
+    @Description("This test checks we can't get other user's data")
+    @DisplayName("Get other user's data")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289482")
     @Test
     public void testGetOtherUserData() {
         Map<String, String> authData = new HashMap<>();

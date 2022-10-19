@@ -1,11 +1,13 @@
 package tests;
 
+import io.qameta.allure.*;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -15,9 +17,14 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Epic("Data edit cases")
+@Feature("Edit user's data")
+@Story("As User I want to update my account's info")
 public class UserEditTest extends BaseTestCase {
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
+    @Description("This test checks we can edit new user's we're authorized in data")
+    @DisplayName("Edit new user's data")
     @Test
     public void testEditJustCreatedUser() {
         // Generate User
@@ -58,6 +65,9 @@ public class UserEditTest extends BaseTestCase {
         Assertions.assertJsonByName(responseUserData, "firstName", newName);
     }
 
+    @Description("This test checks we can't edit user's data without authorization")
+    @DisplayName("Edit user's data without authorization")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289483")
     @Test
     public void testEditUserWithoutAuth() {
         String newName = "Changed Name";
@@ -74,6 +84,9 @@ public class UserEditTest extends BaseTestCase {
 
     }
 
+    @Description("This test checks we can't edit other user's data")
+    @DisplayName("Edit other user's data")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289483")
     @Test
     public void testEditOtherUser() {
         // Generate User
@@ -122,6 +135,9 @@ public class UserEditTest extends BaseTestCase {
 
     }
 
+    @Description("This test checks we can't save invalid data for user")
+    @DisplayName("Save invalid data")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289483")
     @ParameterizedTest
     @CsvFileSource(resources = "/invaliddata.csv")
     public void testEditToInvalidData(String type, String data) {

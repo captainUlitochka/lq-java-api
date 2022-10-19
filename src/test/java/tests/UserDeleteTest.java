@@ -1,11 +1,13 @@
 package tests;
 
+import io.qameta.allure.*;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.ApiCoreRequests;
 import lib.DataGenerator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -13,10 +15,16 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+@Epic("Delete users cases")
+@Feature("Delete users")
+@Story("As User I want to delete my account")
 public class UserDeleteTest extends BaseTestCase {
 
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
+    @Description("This test checks we can't delete first 5 users")
+    @DisplayName("Delete specified user")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289484")
     @Test
     public void deleteSpecifiedUser() {
         Map<String, String> authData = new HashMap<>();
@@ -46,6 +54,9 @@ public class UserDeleteTest extends BaseTestCase {
 
     }
 
+    @Description("This test checks we can delete new user")
+    @DisplayName("Delete new user")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289484")
     @Test
     public void deleteJustCreatedUser() {
         // Generate User
@@ -82,6 +93,9 @@ public class UserDeleteTest extends BaseTestCase {
 
     }
 
+    @Description("This test checks we can't delete other user")
+    @DisplayName("Delete other user")
+    @Link("https://software-testing.ru/lms/mod/assign/view.php?id=289484")
     @Test
     public void deleteOtherUser() {
         // Generate User

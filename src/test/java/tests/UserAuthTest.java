@@ -3,6 +3,7 @@ package tests;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 @Epic("Authorization cases")
 @Feature("Authorization")
+@Story("As User I want to sign in")
 public class UserAuthTest extends BaseTestCase {
 
     String cookie;
